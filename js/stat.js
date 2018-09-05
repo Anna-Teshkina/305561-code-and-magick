@@ -17,28 +17,39 @@ var COLUMN_HEIGHT = 150;
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
   ctx.beginPath();
-  ctx.arc(x + 35, y + 35, 35, 0.3 * Math.PI, 1.8 * Math.PI);
-  ctx.arc(x + 35 + 50, y + 35, 35, 1.2 * Math.PI, 1.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 2, y + 35, 35, 1.2 * Math.PI, 1.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 3, y + 35, 35, 1.2 * Math.PI, 1.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 4, y + 35, 35, 1.2 * Math.PI, 1.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 5, y + 35, 35, 1.2 * Math.PI, 1.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 6, y + 35, 35, 1.2 * Math.PI, 1.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 7, y + 35, 35, 1.2 * Math.PI, 2.3 * Math.PI);
-  ctx.arc(x + 35 + 50 * 7, y + 35 + 50, 35, 1.7 * Math.PI, 2.3 * Math.PI);
-  ctx.arc(x + 35 + 50 * 7, y + 35 + 50 * 2, 35, 1.7 * Math.PI, 2.3 * Math.PI);
-  ctx.arc(x + 35 + 50 * 7, y + 35 + 50 * 3, 35, 1.7 * Math.PI, 2.3 * Math.PI);
-  ctx.arc(x + 35 + 50 * 7, y + 35 + 50 * 4, 35, 1.7 * Math.PI, 3 * Math.PI);
-  ctx.arc(x + 35 + 50 * 6, y + 35 + 50 * 4, 35, 0.2 * Math.PI, 0.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 5, y + 35 + 50 * 4, 35, 0.2 * Math.PI, 0.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 4, y + 35 + 50 * 4, 35, 0.2 * Math.PI, 0.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 3, y + 35 + 50 * 4, 35, 0.2 * Math.PI, 0.8 * Math.PI);
-  ctx.arc(x + 35 + 50 * 2, y + 35 + 50 * 4, 35, 0.2 * Math.PI, 0.8 * Math.PI);
-  ctx.arc(x + 35 + 50, y + 35 + 50 * 4, 35, 0.2 * Math.PI, 0.8 * Math.PI);
-  ctx.arc(x + 35, y + 35 + 50 * 4, 35, 0.2 * Math.PI, 1.3 * Math.PI);
-  ctx.arc(x + 35, y + 35 + 50 * 3, 35, 0.7 * Math.PI, 1.3 * Math.PI);
-  ctx.arc(x + 35, y + 35 + 50 * 2, 35, 0.7 * Math.PI, 1.3 * Math.PI);
-  ctx.arc(x + 35, y + 35 + 50, 35, 0.7 * Math.PI, 1.3 * Math.PI);
+
+  var RADIUS = 35;
+  var STEP = 50;
+  var PI = Math.PI;
+
+  for (var i = 0; i < 7; i++) {
+    if (i === 0) {
+      ctx.arc(x + RADIUS + STEP * i, y + RADIUS, RADIUS, 0.3 * PI, 1.8 * PI);
+    }
+    ctx.arc(x + RADIUS + STEP * i, y + RADIUS, RADIUS, 1.2 * PI, 1.8 * PI);
+  }
+
+  for (i = 0; i < 5; i++) {
+    if (i === 0) {
+      ctx.arc(x + RADIUS + STEP * 7, y + RADIUS + STEP * i, RADIUS, 1.2 * PI, 2.3 * PI);
+    }
+    if (i === 4) {
+      ctx.arc(x + RADIUS + STEP * 7, y + RADIUS + STEP * i, RADIUS, 1.2 * PI, 3 * PI);
+    }
+    ctx.arc(x + RADIUS + STEP * 7, y + RADIUS + STEP * i, RADIUS, 1.7 * PI, 2.3 * PI);
+  }
+
+  for (i = 6; i >= 0; i--) {
+    if (i === 0) {
+      ctx.arc(x + RADIUS + STEP * i, y + RADIUS + STEP * 4, RADIUS, 0.2 * PI, 1.3 * PI);
+    }
+    ctx.arc(x + RADIUS + STEP * i, y + RADIUS + STEP * 4, RADIUS, 0.2 * PI, 0.8 * PI);
+  }
+
+  for (i = 3; i > 0; i--) {
+    ctx.arc(x + RADIUS, y + RADIUS + STEP * i, RADIUS, 0.7 * PI, 1.3 * PI);
+  }
+
   ctx.fill();
   ctx.closePath();
 };
@@ -51,42 +62,50 @@ var getMaxElement = function (array) {
         maxElement = array[i];
       }
     }
-    return maxElement;
-  } else {
-    return 0;
   }
+  return maxElement;
+};
+
+var getString = function (ctx, txt) {
+  ctx.fillStyle = '#000';
+  ctx.font = '16px PT Mono';
+  for (var i = 0; i < txt.length; i++) {
+    ctx.fillText(txt[i], CLOUD_X + TEXT_START_X, TEXT_START_Y + TEXT_GAP * i);
+  }
+};
+
+var getColumn = function (ctx, name, mTime, time, y, j) {
+  if (name === 'Вы') {
+    ctx.fillStyle = 'red';
+  } else {
+    var opacity = 0;
+    while (opacity < 0.1) {
+      opacity = Math.round(Math.random() * 100) / 100;
+    }
+    ctx.fillStyle = 'rgb(0, 0, 255)';
+    ctx.globalAlpha = opacity;
+  }
+
+  ctx.fillRect(CLOUD_X + TEXT_START_X + ((COLUMN_WIDTH + COLUMN_MARGIN) * j), y + (COLUMN_HEIGHT - COLUMN_HEIGHT / mTime * time), COLUMN_WIDTH, COLUMN_HEIGHT / mTime * time);
+  ctx.globalAlpha = 1;
+
+  ctx.fillStyle = '#000';
+  ctx.fillText(name, CLOUD_X + TEXT_START_X + ((COLUMN_WIDTH + COLUMN_MARGIN) * j), CLOUD_Y + CLOUD_HEIGHT - CLOUD_GAP * 2);
+
+  ctx.fillStyle = '#000';
+  ctx.fillText(Math.round(time), CLOUD_X + TEXT_START_X + ((COLUMN_WIDTH + COLUMN_MARGIN) * j), y + (COLUMN_HEIGHT - COLUMN_HEIGHT / mTime * time) - CLOUD_GAP);
 };
 
 window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, 'rgba(0,0,0,0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
-  ctx.fillStyle = '#000';
-  ctx.font = '16px PT Mono';
-  ctx.fillText('Ура, вы победили!', CLOUD_X + TEXT_START_X, TEXT_START_Y);
-  ctx.fillText('Список результатов:', CLOUD_X + TEXT_START_X, TEXT_START_Y + TEXT_GAP);
-
+  var text = ['Ура, вы победили!', 'Список результатов:'];
+  getString(ctx, text);
+  var statisticY = CLOUD_Y + TEXT_GAP * text.length + TEXT_GAP * 2;
   var maxTime = Math.round(getMaxElement(times));
 
   for (var i = 0; i < names.length; i++) {
-    if (names[i] === 'Вы') {
-      ctx.fillStyle = 'red';
-    } else {
-      var opacity = 0;
-      while (opacity < 0.1) {
-        opacity = Math.round(Math.random() * 100) / 100;
-      }
-      ctx.fillStyle = 'rgb(0, 0, 255)';
-      ctx.globalAlpha = opacity;
-    }
-
-    ctx.fillRect(CLOUD_X + TEXT_START_X + ((COLUMN_WIDTH + COLUMN_MARGIN) * i), 90 + (COLUMN_HEIGHT - COLUMN_HEIGHT / maxTime * times[i]), COLUMN_WIDTH, COLUMN_HEIGHT / maxTime * times[i]);
-    ctx.globalAlpha = 1;
-
-    ctx.fillStyle = '#000';
-    ctx.fillText(names[i], CLOUD_X + TEXT_START_X + ((COLUMN_WIDTH + COLUMN_MARGIN) * i), CLOUD_Y + CLOUD_HEIGHT - CLOUD_GAP * 2);
-
-    ctx.fillStyle = '#000';
-    ctx.fillText(Math.round(times[i]), CLOUD_X + TEXT_START_X + ((COLUMN_WIDTH + COLUMN_MARGIN) * i), 90 + (COLUMN_HEIGHT - COLUMN_HEIGHT / maxTime * times[i]) - CLOUD_GAP);
+    getColumn(ctx, names[i], maxTime, times[i], statisticY, i);
   }
 };
