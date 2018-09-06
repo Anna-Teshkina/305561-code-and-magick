@@ -5,6 +5,7 @@ var CLOUD_Y = 10;
 
 var CLOUD_GAP = 10;
 var CLOUD_HEIGHT = 270;
+var CLOUD_WIDTH = 420;
 
 var TEXT_START_X = 30;
 var TEXT_START_Y = 40;
@@ -16,42 +17,47 @@ var COLUMN_HEIGHT = 150;
 
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
-  ctx.beginPath();
-
-  var RADIUS = 35;
-  var STEP = 50;
   var PI = Math.PI;
 
-  for (var i = 0; i < 7; i++) {
+  var NUM_X = 7;
+  var NUM_Y = 5;
+
+  var radX = CLOUD_WIDTH / (NUM_X * 2);
+  var radY = (CLOUD_HEIGHT - radX * 2) / (NUM_Y * 2);
+
+  for (var i = 0; i < NUM_X; i++) {
     if (i === 0) {
-      ctx.arc(x + RADIUS + STEP * i, y + RADIUS, RADIUS, 0.3 * PI, 1.8 * PI);
+      ctx.beginPath();
+      ctx.arc(x + radX + radX * 2 * i, y + radX, radX, 0.5 * PI, 2 * PI);
+      ctx.arc(x + radX + radX * 2 * i, y + CLOUD_HEIGHT - radX, radX, 0, 3 * PI / 2);
+      ctx.fill();
+      ctx.closePath();
     }
-    ctx.arc(x + RADIUS + STEP * i, y + RADIUS, RADIUS, 1.2 * PI, 1.8 * PI);
+
+    if (i === NUM_X - 1) {
+      ctx.beginPath();
+      ctx.arc(x + radX + radX * 2 * i, y + radX, radX, PI, 5 * PI / 2);
+      ctx.arc(x + radX + radX * 2 * i, y + CLOUD_HEIGHT - radX, radX, 3 * PI / 2, 3 * PI);
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    if ((i !== NUM_X - 1) && (i !== 0)) {
+      ctx.beginPath();
+      ctx.arc(x + radX + radX * 2 * i, y + radX, radX, PI, 2 * PI);
+      ctx.arc(x + radX + radX * 2 * i, y + CLOUD_HEIGHT - radX, radX, 0, PI);
+      ctx.fill();
+      ctx.closePath();
+    }
   }
 
-  for (i = 0; i < 5; i++) {
-    if (i === 0) {
-      ctx.arc(x + RADIUS + STEP * 7, y + RADIUS + STEP * i, RADIUS, 1.2 * PI, 2.3 * PI);
-    }
-    if (i === 4) {
-      ctx.arc(x + RADIUS + STEP * 7, y + RADIUS + STEP * i, RADIUS, 1.2 * PI, 3 * PI);
-    }
-    ctx.arc(x + RADIUS + STEP * 7, y + RADIUS + STEP * i, RADIUS, 1.7 * PI, 2.3 * PI);
+  for (var i = 0; i <= NUM_Y; i++) {
+      ctx.beginPath();
+      ctx.arc(x + radY, y + radX + radY * 2 * i, radY, PI / 2, 3 * PI / 2);
+      ctx.arc(x + CLOUD_WIDTH - radY, y + radX + radY * 2 * i, radY, 3 * PI / 2, 5 * PI / 2);
+      ctx.fill();
+      ctx.closePath();
   }
-
-  for (i = 6; i >= 0; i--) {
-    if (i === 0) {
-      ctx.arc(x + RADIUS + STEP * i, y + RADIUS + STEP * 4, RADIUS, 0.2 * PI, 1.3 * PI);
-    }
-    ctx.arc(x + RADIUS + STEP * i, y + RADIUS + STEP * 4, RADIUS, 0.2 * PI, 0.8 * PI);
-  }
-
-  for (i = 3; i > 0; i--) {
-    ctx.arc(x + RADIUS, y + RADIUS + STEP * i, RADIUS, 0.7 * PI, 1.3 * PI);
-  }
-
-  ctx.fill();
-  ctx.closePath();
 };
 
 var getMaxElement = function (array) {
@@ -66,7 +72,7 @@ var getMaxElement = function (array) {
   return maxElement;
 };
 
-var getString = function (ctx, txt) {
+var printString = function (ctx, txt) {
   ctx.fillStyle = '#000';
   ctx.font = '16px PT Mono';
   for (var i = 0; i < txt.length; i++) {
@@ -74,13 +80,13 @@ var getString = function (ctx, txt) {
   }
 };
 
-var getColumn = function (ctx, name, mTime, time, y, j) {
+var renderColumn = function (ctx, name, mTime, time, y, j) {
   if (name === 'Вы') {
     ctx.fillStyle = 'red';
   } else {
     var opacity = 0;
     while (opacity < 0.1) {
-      opacity = Math.round(Math.random() * 100) / 100;
+      opacity = Math.random();
     }
     ctx.fillStyle = 'rgb(0, 0, 255)';
     ctx.globalAlpha = opacity;
@@ -101,11 +107,11 @@ window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
   var text = ['Ура, вы победили!', 'Список результатов:'];
-  getString(ctx, text);
+  printString(ctx, text);
   var statisticY = CLOUD_Y + TEXT_GAP * text.length + TEXT_GAP * 2;
   var maxTime = Math.round(getMaxElement(times));
 
   for (var i = 0; i < names.length; i++) {
-    getColumn(ctx, names[i], maxTime, times[i], statisticY, i);
+    renderColumn(ctx, names[i], maxTime, times[i], statisticY, i);
   }
 };
