@@ -51,12 +51,12 @@ var renderCloud = function (ctx, x, y, color) {
     }
   }
 
-  for (var i = 0; i <= NUM_Y; i++) {
-      ctx.beginPath();
-      ctx.arc(x + radY, y + radX + radY * 2 * i, radY, PI / 2, 3 * PI / 2);
-      ctx.arc(x + CLOUD_WIDTH - radY, y + radX + radY * 2 * i, radY, 3 * PI / 2, 5 * PI / 2);
-      ctx.fill();
-      ctx.closePath();
+  for (i = 0; i <= NUM_Y; i++) {
+    ctx.beginPath();
+    ctx.arc(x + radY, y + radX + radY * 2 * i, radY, PI / 2, 3 * PI / 2);
+    ctx.arc(x + CLOUD_WIDTH - radY, y + radX + radY * 2 * i, radY, 3 * PI / 2, 5 * PI / 2);
+    ctx.fill();
+    ctx.closePath();
   }
 };
 
