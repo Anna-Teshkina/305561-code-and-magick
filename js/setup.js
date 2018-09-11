@@ -5,25 +5,32 @@ var NUMBER_WIZARD = 4;
 var setup = document.querySelector('.setup');
 setup.classList.remove('hidden');
 
-document.querySelector('.setup-similar').classList.remove('hidden');
-
 var NAMES_WIZARD = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var SURNAMES_WIZARD = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COATS_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
 var wizards = [];
 
+var getRandomElement = function (array) {
+  var randomElement = array[Math.floor(Math.random() * array.length)];
+  return randomElement;
+};
+
 var getWizard = function () {
   var flag = Math.round(Math.random());
 
+  var randomName = getRandomElement(NAMES_WIZARD);
+  var randomSurname = getRandomElement(SURNAMES_WIZARD);
+  var nameWizard = '';
+
   if (flag) {
-    var nameWizard = NAMES_WIZARD[Math.floor(Math.random() * NAMES_WIZARD.length)] + ' ' + SURNAMES_WIZARD[Math.floor(Math.random() * SURNAMES_WIZARD.length)];
+    nameWizard = randomName + ' ' + randomSurname;
   } else {
-    nameWizard = SURNAMES_WIZARD[Math.floor(Math.random() * SURNAMES_WIZARD.length)] + ' ' + NAMES_WIZARD[Math.floor(Math.random() * NAMES_WIZARD.length)];
+    nameWizard = randomSurname + ' ' + randomName;
   }
 
-  var coatWizard = COATS_COLOR[Math.floor(Math.random() * COATS_COLOR.length)];
-  var eyesWizard = EYES_COLOR[Math.floor(Math.random() * EYES_COLOR.length)];
+  var coatWizard = getRandomElement(COATS_COLOR);
+  var eyesWizard = getRandomElement(EYES_COLOR);
 
   var wizard = {
     name: nameWizard,
@@ -58,3 +65,5 @@ for (i = 0; i < wizards.length; i++) {
 }
 
 similarListElement.appendChild(fragment);
+
+document.querySelector('.setup-similar').classList.remove('hidden');
