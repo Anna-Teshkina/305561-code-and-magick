@@ -21,11 +21,9 @@ var getWizard = function () {
 
   var randomName = getRandomElement(NAMES_WIZARD);
   var randomSurname = getRandomElement(SURNAMES_WIZARD);
-  var nameWizard = '';
+  var nameWizard = randomName + ' ' + randomSurname;
 
-  if (flag) {
-    nameWizard = randomName + ' ' + randomSurname;
-  } else {
+  if (!flag) {
     nameWizard = randomSurname + ' ' + randomName;
   }
 
