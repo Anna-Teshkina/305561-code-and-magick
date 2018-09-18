@@ -7,6 +7,9 @@ var SURNAMES_WIZARD = ['да Марья', 'Верон', 'Мирабелла', '�
 var COATS_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 var wizards = [];
 
 var getRandomElement = function (array) {
@@ -71,9 +74,6 @@ var setupClose = setup.querySelector('.setup-close');
 var setupName = setup.querySelector('.setup-user-name');
 var setupSubmit = setup.querySelector('.setup-submit');
 
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
-
 var onPopupEcsPress = function (evt) {
   if ((evt.keyCode === ESC_KEYCODE) && (setupName !== document.activeElement)) {
     closePopup();
@@ -109,9 +109,7 @@ var closePopup = function () {
 
 
 /* --------ОБРАБОТЧИКИ------------------*/
-setupOpen.addEventListener('click', function () {
-  openPopup();
-});
+setupOpen.addEventListener('click', openPopup);
 
 setupIcon.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
@@ -119,9 +117,7 @@ setupIcon.addEventListener('keydown', function (evt) {
   }
 });
 
-setupClose.addEventListener('click', function () {
-  closePopup();
-});
+setupClose.addEventListener('click', closePopup);
 
 setupClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
