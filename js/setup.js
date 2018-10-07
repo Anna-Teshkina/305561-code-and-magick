@@ -10,6 +10,9 @@ var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
+var FIXED_POPUP_X = '50%';
+var FIXED_POPUP_Y = '80px';
+
 var wizards = [];
 
 var getRandomElement = function (array) {
@@ -105,6 +108,9 @@ var openPopup = function () {
 var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEcsPress);
+  /* -----------------*/
+  setup.style.top = FIXED_POPUP_Y;
+  setup.style.left = FIXED_POPUP_X;
 };
 
 
