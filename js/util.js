@@ -16,6 +16,10 @@
       if (evt.keyCode === ENTER_KEYCODE) {
         action();
       }
+    },
+    getRandomElement: function (array) {
+      var randomElement = array[Math.floor(Math.random() * array.length)];
+      return randomElement;
     }
   };
 })();

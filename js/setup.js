@@ -11,30 +11,19 @@
 
   var wizards = [];
 
-  window.setup = {
-    COATS_COLOR: COATS_COLOR,
-    EYES_COLOR: EYES_COLOR,
-    FIREBALL_COLOR: FIREBALL_COLOR,
-
-    getRandomElement: function (array) {
-      var randomElement = array[Math.floor(Math.random() * array.length)];
-      return randomElement;
-    }
-  };
-
   var getWizard = function () {
     var flag = Math.round(Math.random());
 
-    var randomName = window.setup.getRandomElement(NAMES_WIZARD);
-    var randomSurname = window.setup.getRandomElement(SURNAMES_WIZARD);
+    var randomName = window.util.getRandomElement(NAMES_WIZARD);
+    var randomSurname = window.util.getRandomElement(SURNAMES_WIZARD);
     var nameWizard = randomName + ' ' + randomSurname;
 
     if (flag) {
       nameWizard = randomSurname + ' ' + randomName;
     }
 
-    var coatWizard = window.setup.getRandomElement(COATS_COLOR);
-    var eyesWizard = window.setup.getRandomElement(EYES_COLOR);
+    var coatWizard = window.util.getRandomElement(COATS_COLOR);
+    var eyesWizard = window.util.getRandomElement(EYES_COLOR);
 
     var wizard = {
       name: nameWizard,
@@ -71,4 +60,10 @@
   similarListElement.appendChild(fragment);
 
   document.querySelector('.setup-similar').classList.remove('hidden');
+
+  window.setup = {
+    COATS_COLOR: COATS_COLOR,
+    EYES_COLOR: EYES_COLOR,
+    FIREBALL_COLOR: FIREBALL_COLOR,
+  };
 })();
