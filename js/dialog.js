@@ -10,7 +10,8 @@
   var setupIcon = document.querySelector('.setup-open-icon');
   var setupClose = setup.querySelector('.setup-close');
   var setupName = setup.querySelector('.setup-user-name');
-  var setupSubmit = setup.querySelector('.setup-submit');
+  // var setupSubmit = setup.querySelector('.setup-submit');
+  var form = setup.querySelector('.setup-wizard-form');
 
   var onPopupEcsPress = function (evt) {
     if ((evt.keyCode === window.util.ESC_KEYCODE) && (setupName !== document.activeElement)) {
@@ -18,9 +19,32 @@
     }
   };
 
-  var sendForm = function () {
+  /* var sendForm = function () {
     setup.submit();
+  };*/
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), onSave, onSaveError);
+  });
+
+  var onSave = function () {
+    window.dialog.setup.classList.add('hidden');
   };
+
+  var onSaveError = function (errorMessage) {
+    var node = document.createElement('div.error');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.top = '34px';
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
 
   /* -----------ОТКРЫТИЕ ОКНА------------
   -окно.setup должно открываться по нажатию на блок.setup-open. Открытие окна производится удалением класса hidden у блока
@@ -32,7 +56,7 @@
   var openPopup = function () {
     setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEcsPress);
-    setupSubmit.addEventListener('click', sendForm);
+    // setupSubmit.addEventListener('click', sendForm);
   };
 
   /* -----------ЗАКРЫТИЕ ОКНА-------------
@@ -114,4 +138,7 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+  window.dialog = {
+    setup: setup
+  };
 })();
